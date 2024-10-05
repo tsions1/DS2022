@@ -1,0 +1,96 @@
+Last login: Fri Oct  4 20:51:44 on ttys002
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+Tsions-MacBook-Air:~ tsionsahle$ bash
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+bash-3.2$ mkdir -p ~/my-work/lab4
+bash-3.2$ cd ~/my-work/lab4
+bash-3.2$ nano s3_upload_presign.sh
+bash-3.2$ chmod +x script.sh
+chmod: script.sh: No such file or directory
+bash-3.2$ chmod 755
+usage:	chmod [-fhv] [-R [-H | -L | -P]] [-a | +a | =a  [i][# [ n]]] mode|entry file ...
+	chmod [-fhv] [-R [-H | -L | -P]] [-E | -C | -N | -i | -I] file ...
+bash-3.2$ ./s3_upload_presign.sh
+bash: ./s3_upload_presign.sh: Permission denied
+bash-3.2$ chmod 755 s3_upload_presign.sh
+bash-3.2$ ./s3_upload_presign.sh
+Uploading file...
+
+The user-provided path google_logo.png does not exist.
+Creating presighned URL...
+Presigned URL: https://ds2022-cnb8jw.s3.us-east-1.amazonaws.com/google_logo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAUQ4L3M73MODUDHZZ%2F20241005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241005T014243Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=6e38adcec77d2e829065b9d6d5fd6c358223cd0afacaa1439e5cec9f7d572f66
+bash-3.2$ python3
+Python 3.12.6 (v3.12.6:a4a2d2b0d85, Sep  6 2024, 16:08:03) [Clang 13.0.0 (clang-1300.0.29.30)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import boto3
+>>> s3 = boto3.client('s3', region_name='us-east-1')
+>>> url = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" 
+>>> File_Name = "google_logo.png"
+>>> Bucket_Name=ds2022-cnb8jw
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'ds2022' is not defined
+>>> Bucket_Name="ds2022-cnb8jw"
+>>> s3.upload_file(file_name, bucket_name, file_name)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'file_name' is not defined. Did you mean: 'File_Name'?
+>>> s3.upload_file(File_Name, Bucket_Name, File_Name)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/boto3/s3/inject.py", line 145, in upload_file
+    return transfer.upload_file(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/boto3/s3/transfer.py", line 372, in upload_file
+    future.result()
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/s3transfer/futures.py", line 103, in result
+    return self._coordinator.result()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/s3transfer/futures.py", line 266, in result
+    raise self._exception
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/s3transfer/tasks.py", line 269, in _main
+    self._submit(transfer_future=transfer_future, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/s3transfer/upload.py", line 591, in _submit
+    upload_input_manager.provide_transfer_size(transfer_future)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/s3transfer/upload.py", line 244, in provide_transfer_size
+    self._osutil.get_file_size(transfer_future.meta.call_args.fileobj)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/s3transfer/utils.py", line 256, in get_file_size
+    return os.path.getsize(filename)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen genericpath>", line 62, in getsize
+FileNotFoundError: [Errno 2] No such file or directory: 'google_logo.png'
+>>> presigned_url = s3.generate_presigned_url(
+...   'get_object',
+...   Params={'Bucket': bucket_name, 'Key': file_name},
+...   ExpiresIn=604800
+... )
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'bucket_name' is not defined. Did you mean: 'Bucket_Name'?
+>>> presigned_url = s3.generate_presigned_url(
+...   'get_object',
+...   Params={'Bucket': bucket_name, 'Key': file_name},
+...   ExpiresIn=604800
+...   )
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+NameError: name 'bucket_name' is not defined. Did you mean: 'Bucket_Name'?
+>>> presigned_URL = s3.generate_presigned_url(
+...   'get_object',
+...   Params={'Bucket': Bucket_Name, 'Key': File_Name},
+...   ExpiresIn=604800
+...   )
+>>> 
+>>> print(f"Presigned URL: {presigned_url}")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'presigned_url' is not defined. Did you mean: 'presigned_URL'?
+>>> print(f"Presigned URL: {presigned_URL}")
+Presigned URL: https://ds2022-cnb8jw.s3.amazonaws.com/google_logo.png?AWSAccessKeyId=AKIAUQ4L3M73MODUDHZZ&Signature=G%2FpN4NmsTBRU8Ug2ouOwvZ56k9g%3D&Expires=1728702543
+>>> exit()
